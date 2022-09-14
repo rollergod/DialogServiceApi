@@ -118,30 +118,6 @@ namespace Samozanyatie_API.DAL.Repositories
 
             });
 
-
-            Guid IDRGDialog4 = new Guid("123beb2f-c315-41a2-b2e5-f0324de55a9f");
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient1
-            });
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient2
-            });
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient3
-            });
-
             return L1;
 
         }
