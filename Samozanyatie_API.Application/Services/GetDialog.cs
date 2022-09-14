@@ -19,9 +19,9 @@ namespace Samozanyatie_API.Application.Services
             _repo = repo;
         }
 
-        public string GetDialogId(Guid[] clientIds)
+        public Guid GetDialogId(Guid[] clientIds)
         {
-            string resultId = "";
+            Guid resultId = Guid.Empty;
 
             var initialData = _repo.Init();
 
@@ -37,7 +37,7 @@ namespace Samozanyatie_API.Application.Services
                     .Count() == clientIds.Length;
 
                 if (returnValue)
-                    resultId += "\n" + groupedClients.Key.ToString();
+                    resultId = groupedClients.Key;
             }
 
             return resultId;

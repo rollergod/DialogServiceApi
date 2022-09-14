@@ -36,21 +36,23 @@ namespace Somozanyatie_API.Tests
         }
 
         [Fact]
-        public void GetMethod_ReturnNotFoundWhenIdsAreBad()
+        public void GetMethod_ReturnGuidEmptyWhenIdsAreBad()
         {
             //Arrange
             var ids = new Guid[] { IDClient4 };
             repositoryMock.Setup(mock => mock.Init()).Returns(InitialData());
             dialogServiceMock.Setup(mock => 
                 mock.GetDialogId(new Guid[] { IDClient4 }))
-                .Returns("");
+                .Returns(Guid.Empty);
             var controller = new DialogController(dialogServiceMock.Object);
 
             //Act
             var result = controller.Get(ids);
 
             //Assert
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<OkObjectResult>(result);
+            var id = result as OkObjectResult;
+            Assert.Equal(Guid.Empty, id.Value);
         }
 
         [Fact]
@@ -61,7 +63,7 @@ namespace Somozanyatie_API.Tests
             repositoryMock.Setup(mock => mock.Init()).Returns(InitialData());
             dialogServiceMock.Setup(mock => 
                 mock.GetDialogId(ids))
-                .Returns("19f6f751-7f8d-41fa-8261-709028650592");
+                .Returns(new Guid("fcd6b112-1834-4420-bee6-70c9776f6378"));
 
             //Act
             var controller = new DialogController(dialogServiceMock.Object);
@@ -70,35 +72,8 @@ namespace Somozanyatie_API.Tests
             //Assert
             Assert.IsType<OkObjectResult>(result);
             var id = result as OkObjectResult;
-            Assert.Equal("19f6f751-7f8d-41fa-8261-709028650592", id.Value);
+            Assert.Equal(new Guid("fcd6b112-1834-4420-bee6-70c9776f6378"), id.Value);
         }
-
-        [Fact]
-        public void GetMethod_ReturnStatusCode200WithTwoDialogsId()
-        {
-            //Arrange
-            var ids = new Guid[] { IDClient1, IDClient2, IDClient3 };
-            var resultValue = new string[] 
-            { 
-                "fcd6b112-1834-4420-bee6-70c9776f6378", 
-                "123beb2f-c315-41a2-b2e5-f0324de55a9f" 
-            };
-            repositoryMock.Setup(mock => mock.Init()).Returns(InitialData());
-            dialogServiceMock.Setup(mock =>
-                mock.GetDialogId(ids))
-                .Returns("fcd6b112-1834-4420-bee6-70c9776f6378\n123beb2f-c315-41a2-b2e5-f0324de55a9f");
-
-            //Act
-            var controller = new DialogController(dialogServiceMock.Object);
-            var result = controller.Get(ids) as OkObjectResult;
-
-            //Assert
-            string value = (string)result.Value;
-            var idArray = value.Split("\n");
-            Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(idArray.Select(id => id),resultValue.Select(id => id));
-        }
-
 
 
         public List<RGDialogsClients> InitialData()
@@ -142,29 +117,6 @@ namespace Somozanyatie_API.Tests
                 IDUnique = Guid.NewGuid(),
                 IDRGDialog = IDRGDialog2,
                 IDClient = IDClient2
-            });
-
-            Guid IDRGDialog4 = new Guid("123beb2f-c315-41a2-b2e5-f0324de55a9f");
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient1
-            });
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient2
-            });
-
-            L1.Add(new RGDialogsClients
-            {
-                IDUnique = Guid.NewGuid(),
-                IDRGDialog = IDRGDialog4,
-                IDClient = IDClient3
             });
 
             return L1;

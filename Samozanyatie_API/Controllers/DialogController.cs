@@ -22,17 +22,13 @@ namespace Samozanyatie_API.Controllers
         [HttpGet]
         [ProducesResponseType(200,Type = typeof(string))]
         [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
         public IActionResult Get([FromQuery] Guid[] idsToSearch)
         {
             if (idsToSearch == null || idsToSearch.Length == 0)
                 return BadRequest();
 
             var result = _dialogService.GetDialogId(idsToSearch);
-
-            if (result.Length == 0)
-                return NotFound();
-
+           
             return Ok(result);
         }
     }

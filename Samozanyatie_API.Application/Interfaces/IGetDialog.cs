@@ -9,6 +9,6 @@ namespace Samozanyatie_API.Application.Interfaces
 {
     public interface IGetDialog
     {
-        public string GetDialogId(Guid[] clientIds);
+        public Guid GetDialogId(Guid[] clientIds);
     }
 }
